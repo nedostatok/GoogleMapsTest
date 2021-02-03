@@ -54,10 +54,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         NetworService.shared.loadPlaces { response in
             
             switch response {
-            case let .Value(place):
+            case let .success(place):
                 self.arrayOfCoordinate = place.places
-                
-            case let .Error(error):
+            case let .failure(error):
                 print(error)
             }
         }

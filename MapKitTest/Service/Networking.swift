@@ -9,8 +9,9 @@ import Foundation
 
 class NetworService {
     static let shared = NetworService()
+    typealias Handle = (Result<Places,Error>) -> ()
 
-    func loadPlaces(completion: @escaping (ResponseEnum<Places>) -> ()) {
+    func loadPlaces(completion: @escaping Handle) -> () {
         
         guard let url = URL(string: "https://2fjd9l3x1l.api.quickmocker.com/kyiv/places") else { return }
         
@@ -19,23 +20,23 @@ class NetworService {
             
             guard error == nil else {
                 let taskError = NSError(domain: "domain", code: ErrorCode.taskError.rawValue, userInfo: nil)
-                completion(.Error(taskError))
+                completion(.failure(taskError))
                 return
             }
             
             guard let data = data else {
                 let emptyData = NSError(domain: "domain", code: ErrorCode.emptyData.rawValue, userInfo: nil)
-                completion(.Error(emptyData))
+                completion(.failure(emptyData))
                 return
             }
             
             do {
                 let response = try JSONDecoder().decode(Places.self, from: data)
-                completion(.Value(response))
+                completion(.success(response))
                 
             } catch {
                 let parseError = NSError(domain: "", code: ErrorCode.parseError.rawValue, userInfo: nil)
-                completion(.Error(parseError))
+                completion(.failure(parseError))
             }
         }.resume()
     }

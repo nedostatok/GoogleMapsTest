@@ -7,11 +7,6 @@
 
 import Foundation
 
-enum ResponseEnum<T>{
-    case Error(NSError)
-    case Value(T)
-}
-
 struct Places: Decodable {
     let places: [Place]
 }
