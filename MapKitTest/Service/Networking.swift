@@ -14,7 +14,6 @@ class NetworService {
     func loadPlaces(completion: @escaping Handle) -> () {
         
         guard let url = URL(string: "https://2fjd9l3x1l.api.quickmocker.com/kyiv/places") else { return }
-        
         let session = URLSession(configuration: .default)
         session.dataTask(with: url) { (data, response, error) in
             
